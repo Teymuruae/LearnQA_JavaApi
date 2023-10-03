@@ -1,3 +1,6 @@
+import io.qameta.allure.Epic;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Owner;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.AssertionsOwn;
@@ -11,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Edit")
+@Issue("EDIT-456")
 public class HomeWork17EditUser extends BaseTest {
 
     private ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
@@ -32,6 +37,7 @@ public class HomeWork17EditUser extends BaseTest {
         userId = response.path("id");
     }
 
+    @Owner("Teymur")
     @DisplayName("Trying to edit user by not authorized same user")
     @Test
     void editUserNotAuthorizedSameUserTest() {
@@ -60,7 +66,7 @@ public class HomeWork17EditUser extends BaseTest {
 
         AssertionsOwn.checkStringValue(getResponse, "firstName", expectedName);
     }
-
+    @Owner("Teymur")
     @DisplayName("Trying to edit user by another user")
     @Test
     void editUserByAnotherUserTest() {
@@ -113,6 +119,7 @@ public class HomeWork17EditUser extends BaseTest {
         AssertionsOwn.checkStringValue(getResponse, "firstName", expectedName);
     }
 
+    @Owner("Teymur")
     @DisplayName("Trying to edit user email on wrong email by authorized same user")
     @Test
     void editUserEmailOnWrongEmailAuthorizedSameUserTest() {
@@ -144,6 +151,7 @@ public class HomeWork17EditUser extends BaseTest {
         AssertionsOwn.checkStringValue(getResponse, "email", email);
     }
 
+    @Owner("Teymur")
     @DisplayName("Trying to edit user name on short name by authorized same user")
     @Test
     void editUserNameOnShortNameAuthorizedSameUserTest() {

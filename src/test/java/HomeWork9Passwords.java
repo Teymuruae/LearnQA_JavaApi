@@ -1,3 +1,5 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +27,8 @@ public class HomeWork9Passwords {
         put(loginText, adminLogin);
     }};
 
+    @Description("Подбираем правильный пароль из списка")
+    @Owner("Teymur")
     @Test
     void getValidPasswordTest() {
 

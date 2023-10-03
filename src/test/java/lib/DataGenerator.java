@@ -20,7 +20,7 @@ public class DataGenerator {
             {
                 put("email", DataGenerator.generateRandomEmail());
                 put("password", "123");
-                put("username", "learnqa");
+                put("username", "learnqaUserName");
                 put("firstName", "learnqa");
                 put("lastName", "learnqa");
             }

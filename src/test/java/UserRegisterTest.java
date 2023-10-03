@@ -1,4 +1,5 @@
 import io.qameta.allure.Epic;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
@@ -51,11 +52,11 @@ public class UserRegisterTest {
                 .body(body)
                 .post(url)
                 .andReturn();
-
         AssertionsOwn.assertStatusCode(response, 200);
         AssertionsOwn.assertJsonHasKey(response, "id");
     }
 
+    @Owner("Teymur")
     @DisplayName("Auth with wrong email negative test")
     @Test
     void authWithWrongEmailTest() {
@@ -78,6 +79,8 @@ public class UserRegisterTest {
             "firstName",
             "lastName"
     })
+
+    @Owner("Teymur")
     @ParameterizedTest
     void authWithoutOneFieldTest(String field) {
         Map<String, String> body = DataGenerator.getRegistrationDataWithoutOneField(field);
@@ -89,6 +92,7 @@ public class UserRegisterTest {
         AssertionsOwn.assertHtmlBody(response, responseBody);
     }
 
+    @Owner("Teymur")
     @DisplayName("Auth with short name test")
     @Test
     void authWithShortNameTest() {
@@ -103,6 +107,7 @@ public class UserRegisterTest {
         AssertionsOwn.assertHtmlBody(response, "The value of 'firstName' field is too short");
     }
 
+    @Owner("Teymur")
     @DisplayName("Auth with long name test")
     @Test
     void authWithLongNameTest() {

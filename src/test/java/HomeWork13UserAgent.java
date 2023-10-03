@@ -1,3 +1,5 @@
+import io.qameta.allure.Epic;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+@Epic("UserAgent")
 public class HomeWork13UserAgent {
 
     private String
@@ -43,6 +46,7 @@ public class HomeWork13UserAgent {
         );
     }
 
+    @Owner("Teymur")
     @ParameterizedTest
     @MethodSource
     void userAgentTest(String userAgent, String platform, String browser, String device) {

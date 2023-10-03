@@ -1,3 +1,5 @@
+import io.qameta.allure.Epic;
+import io.qameta.allure.Owner;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.AssertionsOwn;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("Delete")
 public class UserDeleteTest extends BaseTest {
 
     private ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
@@ -21,6 +24,7 @@ public class UserDeleteTest extends BaseTest {
             headerKey = "x-csrf-token",
             secondUserPassword = "1234";
 
+    @Owner("Teymur")
     @DisplayName("Delete user by id 2 test")
     @Test
     void deleteUser2Test() {
@@ -45,6 +49,7 @@ public class UserDeleteTest extends BaseTest {
         AssertionsOwn.checkStringValue(getResponse, "id", "2");
     }
 
+    @Owner("Teymur")
     @DisplayName("Delete user positive test")
     @Test
     void deleteUserPositiveTest() {
@@ -79,6 +84,7 @@ public class UserDeleteTest extends BaseTest {
         AssertionsOwn.assertHtmlBody(getResponse, "User not found");
     }
 
+    @Owner("Teymur")
     @DisplayName("Delete user by another user test")
     @Test
     void deleteUserByAnotherUserTest() {

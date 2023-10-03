@@ -1,7 +1,9 @@
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class HomeWork8Tokens {
@@ -18,6 +20,8 @@ public class HomeWork8Tokens {
         return (long) seconds * 1000;
     }
 
+    @Owner("Teymur")
+    @DisplayName("Token test")
     @Test
     void tokenTest() throws InterruptedException {
         Response response = RestAssured

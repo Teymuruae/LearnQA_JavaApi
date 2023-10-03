@@ -1,5 +1,6 @@
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
@@ -50,6 +51,7 @@ public class HomeWork16 extends BaseTest {
         this.header = this.getHeader(response, headerKey);
     }
 
+    @Owner("Teymur")
     @DisplayName("Get user by another user")
     @Test
     void getUserByAnotherUserTest() {

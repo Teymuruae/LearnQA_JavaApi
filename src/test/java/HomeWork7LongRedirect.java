@@ -1,9 +1,15 @@
+import io.qameta.allure.Issue;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@Issue("REDIR-586")
 public class HomeWork7LongRedirect {
 
+    @Owner("Teymur")
+    @DisplayName("Long redirection test")
     @Test
     void longRedirectTest(){
         String url = "https://playground.learnqa.ru/api/long_redirect";

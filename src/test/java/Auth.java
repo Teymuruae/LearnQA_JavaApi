@@ -1,13 +1,17 @@
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import jdk.jfr.Description;
+import lib.ApiCoreRequests;
 import lib.AssertionsOwn;
 import lib.BaseTest;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -15,6 +19,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Issue("AUTH-567")
+@Epic("Auth cases")
+@Feature("Auth")
 public class Auth extends BaseTest {
 
     private int userId;
@@ -23,6 +30,7 @@ public class Auth extends BaseTest {
             header,
             authUrl = "https://playground.learnqa.ru/api/user/auth";
 
+    private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
 
     @BeforeEach
     void setUp() {
@@ -45,83 +53,44 @@ public class Auth extends BaseTest {
         this.header = this.getHeader(response, "x-csrf-token");
     }
 
-    @Test
-    void authTest() {
-
-        Response response2 = RestAssured
-                .given().log().all()
-                .header("x-csrf-token", header)
-                .cookie("auth_sid", cookie)
-                .when()
-                .get("https://playground.learnqa.ru/api/user/auth")
-                .then().log().all()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().response();
-    }
-
+    @Owner("Teymur")
+    @Description("Auth test with cookie and token")
+    @DisplayName("Auth positive test")
     @Test
     void positiveAuth() {
 
         Map<String, String> authCookie = new HashMap<>() {{
             put("auth_sid", cookie);
         }};
+        Response authResponse = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/auth",
+                this.cookie, this.header);
 
-        Response authResponse = RestAssured
-                .given()
-                .cookies(authCookie)
-                .header("x-csrf-token", header)
-                .get(authUrl)
-                .then().log().all()
-                .extract().response();
-
-        AssertionsOwn.checkIntValue(authResponse,"user_id", userId );
+        AssertionsOwn.checkIntValue(authResponse, "user_id", userId);
     }
 
+    @Owner("Teymur")
     @Test
     void negativeAuth() {
+        Response authResponse = apiCoreRequests.makeGetRequest("https://playground.learnqa.ru/api/user/auth",
+                cookie, this.header);
 
-        Map<String, String> authCookie = new HashMap<>() {{
-            put("auth_sid", "cookie");
-        }};
-
-        Response authResponse = RestAssured
-                .given()
-                .cookies(authCookie)
-                .header("x-csrf-token", header)
-                .get(authUrl)
-                .then().log().all()
-                .extract().response();
-
-        AssertionsOwn.checkIntValue(authResponse,"user_id", 0 );
+        AssertionsOwn.checkIntValue(authResponse, "user_id", 0);
     }
 
-
+    @Owner("Teymur")
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
     void paramNegative(String condition) {
-
-
-        RequestSpecification spec = RestAssured.given().log().all();
-        spec.baseUri(authUrl);
-
-        Map<String, String> cookies = new HashMap<>();
-        cookies.put("auth_sid", cookie);
-
-
+        Response response;
         if (condition.equals("cookie")) {
-            spec.cookies(cookies);
+            response = apiCoreRequests.makeGetRequestWithCookie(authUrl, cookie);
+            AssertionsOwn.checkIntValue(response, "user_id", 0);
         } else if (condition.equals("headers")) {
-            spec.header("x-csrf-token", header);
+            response = apiCoreRequests.makeGetRequestWithToken(authUrl, header);
+            AssertionsOwn.checkIntValue(response, "user_id", 0);
         } else {
             throw new IllegalArgumentException("Condition is unknown " + condition);
         }
 
-        Response response1 = spec
-                .get()
-                .then()
-                .log()
-                .all()
-                .extract()
-                .response();
     }
 }
